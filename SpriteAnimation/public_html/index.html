@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+        <title>GameArt - Sprite Animation</title>
+    </head>
+<body>
+
+
+
+
+
+    <h1 id="heading"> Sprite Animation </h1>
+
+
+<canvas id="myCanvas" width="600" height="300" style="border:2px solid #000000;">
+Your browser does not support the HTML5 canvas tag.
+</canvas>
+
+
+<script>
+   
+    var canvas;
+    var img;
+    var ctx;
+    var i = 0;
+    var d;
+    var prevTime;
+    var fps;
+    
+        //Warte bis das DOM fertig aufgebaut wurde
+    window.onload = function() {
+        
+      
+      
+        /*
+        eineVariable = "Hallo Welt";
+        heading = document.getElementById("heading");
+       
+        */
+
+            fps = 20;
+        
+             canvas = document.getElementById("myCanvas");
+           
+             ctx = canvas.getContext("2d");
+             
+             img = new Image();
+             img.src = 'bilder/coin.png';
+             
+            d = new Date();
+            prevTime = d.getTime();
+            
+             window.requestAnimationFrame(gameLoop);
+      
+         
+         };
+
+function gameLoop() {
+    window.requestAnimationFrame(gameLoop);
+    
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    
+    ctx.drawImage(img, i*44, 0, 44, 40, 10, 10, 88, 80);
+    /*
+     context.drawImage(img, sx, sy, sw, sh, dx, dy, dw, dh)
+     img Source image object Sprite sheet
+     sx Source x
+     sy Source y
+     sw Source width
+     sh Source height
+     dx Destination x
+     dy Destination y
+     dw Destination width
+     dh Destination height 
+     */
+
+
+    d = new Date();
+    var currentTime = d.getTime();
+    var dt =   currentTime- prevTime;
+    var dif = (1000/fps) - dt;
+    if(dif <= fps) {
+        i = (i+1)%10;
+        prevTime = currentTime;
+   
+    }
+ 
+    
+
+}
+</script>
+
+</body>
+</html>

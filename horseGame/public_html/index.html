@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+        <title>GameArt - Sprite Animation</title>
+    </head>
+<body>
+
+
+
+
+
+    <h1 id="heading"> Sprite Animation </h1>
+
+
+<canvas id="myCanvas" width="800" height="400" style="border:2px solid #000000;">
+Your browser does not support the HTML5 canvas tag.
+</canvas>
+
+
+<script>
+   
+   
+   function Animation(file, fps, width, height, scale, nRows, nColls, posX, posY) {
+       this.spriteSheet = new Image();
+       this.spriteSheet.src = file;
+       this.width = width;
+       this.height = height;
+       this.nRows = nRows;
+       this.nColls = nColls;
+       this.posX = posX;
+       this.posY = posY;
+       this.index = 0;
+       this.fps = fps;
+       this.scale = scale;
+       this.elapsedTime = 0.0;
+   }
+
+    Animation.prototype.update = function(dt) {
+        this.elapsedTime+= dt;
+        if(1000.0/this.fps - this.elapsedTime < 0.0) {
+            this.index+=1;
+            this.index = this.index % (this.nRows*this.nColls);
+            this.elapsedTime = 0.0;
+        }
+    };
+
+    Animation.prototype.draw = function(ctx) {
+        var i = Math.floor(this.index/this.nColls);
+        var j =this.index % this.nColls;
+        ctx.drawImage(this.spriteSheet, j*this.width, i*this.height, this.width, this.height, this.posX, this.posY, this.scale*this.width, this.scale*this.height);
+    };
+
+
+    function GameObject(id, canvas, animations, sounds, position, velocity, collisionRadius) {
+        this.id = id;
+        this.collisionRadius = collisionRadius;
+        this.canvas = canvas;
+        this.position = position;
+        this.velocity = velocity;
+        this.force = [0.0, 0.0];
+        
+        this.activeAnimation = 0;
+        this.animations = [];
+        var i = 0;
+        this.animations.push (new Animation(animations[i][0], animations[i][1], animations[i][2], animations[i][3], animations[i][4], animations[i][5], animations[i][6], animations[i][7], animations[i][8]));
+        this.sounds = sounds;
+   }
+
+    GameObject.prototype.update = function(dt) {
+        this.position[0] += dt*this.velocity[0];
+        this.position[1] += dt*this.velocity[1];
+        this.animations[this.activeAnimation].update(dt);
+        this.animations[this.activeAnimation].posX = this.position[0] - this.animations[this.activeAnimation].scale * this.animations[this.activeAnimation].width/2.0;
+        this.animations[this.activeAnimation].posY = this.canvas.height - (this.position[1] + this.animations[this.activeAnimation].scale * this.animations[this.activeAnimation].height/2.0);
+
+        this.animations[this.activeAnimation].draw(this.canvas.getContext("2d"));
+    };
+
+
+
+
+    var canvas;
+    var d;
+    var prevTime;
+    var triggerTime = 0.0;
+ 
+    var gameObjects = [];
+ 
+        //Warte bis das DOM fertig aufgebaut wurde
+    window.onload = function() {
+        
+      
+      
+        /*
+        eineVariable = "Hallo Welt";
+        heading = document.getElementById("heading");
+       
+        */
+        
+        
+          
+             canvas = document.getElementById("myCanvas");
+           
+             var horseAnimations = [];
+             horseAnimations.push(["sprite-horse.png",24,183,134,1.0, 4,4,0,0]);
+             
+                 // GameObject(canvas, animations, sounds, position, velocity, collisionRadius)
+            var horse = new GameObject("horse", canvas, horseAnimations, null, [200.0, 50.0], [0.0, 0.0], 50.0);
+            gameObjects.push(horse);
+            var boxAnimations = [];
+            boxAnimations.push(["square.png",1,100, 100,0.5, 1,1,0,0]);
+            var box = new GameObject("box", canvas, boxAnimations, null, [800.0, 20.0], [-0.2, 0.0], 20.0);
+            gameObjects.push(box);
+
+            d = new Date();
+            prevTime = d.getTime();
+            
+            document.addEventListener('keydown', function(event) {
+                                      if(event.keyCode == 38) {
+                                     
+                                      }
+                                      else if(event.keyCode == 40) {
+                                      
+                                      }
+                                      });
+                                      
+            document.addEventListener('keyup', function(event) {
+                                      if(event.keyCode == 38) {
+                                     
+                                      }
+                                      else if(event.keyCode == 40) {
+                                    
+                                      }
+                                      });
+            
+             window.requestAnimationFrame(gameLoop);
+             
+         };
+
+function gameLoop() {
+    window.requestAnimationFrame(gameLoop);
+    deleteObjectsOutOfRange();
+    detectCollisions();
+    canvas.getContext("2d").clearRect(0, 0, canvas.width, canvas.height);
+    
+    d = new Date();
+    var currentTime = d.getTime();
+    var dt =   currentTime- prevTime;
+    
+    
+    var index;
+    for (index = 0; index < gameObjects.length; ++index) {
+        gameObjects[index].update(dt);
+    }
+ 
+    triggerTime+= dt;
+
+    if(triggerTime > 5000.0) {
+        triggerTime = 0.0;
+        var boxAnimations = [];
+        boxAnimations.push([ "square.png",1,100, 100,0.8, 1,1,0,0]);
+        var box = new GameObject("box",canvas, boxAnimations, null, [800.0, 25.0], [-0.2, 0.0], 20.0);
+        gameObjects.push(box);
+        
+
+    }
+    prevTime = currentTime;
+        //anim.posX += 5;
+  
+}
+
+
+function deleteObjectsOutOfRange() {
+    var index;
+    for (index = 0; index < gameObjects.length; ++index) {
+        var gameObject = gameObjects[index];
+        if(gameObject.position[0] <-100 || gameObject.position[0] > canvas.width + 100 || gameObject.position[1] <-100 || gameObject.position[1] > canvas.height + 100) {
+            gameObjects.splice(index, 1);
+        }
+    }
+}
+
+function detectCollisions() {
+    var index1;
+    var index2;
+    for (index1 = 0; index1 < gameObjects.length; ++index1) {
+        var gameObject1 = gameObjects[index1];
+        
+        for (index2 = index1+1; index2 < gameObjects.length; ++index2) {
+            var gameObject2 = gameObjects[index2];
+            
+            var distance = Math.sqrt(Math.pow(gameObject1.position[0]-gameObject2.position[0],2) + Math.pow(gameObject1.position[1]-gameObject2.position[1],2));
+            if(distance < gameObject1.collisionRadius + gameObject2.collisionRadius) {
+                console.log("collision: " +  gameObject1.id + " / " + gameObject2.id);
+            }
+        }
+    }
+
+}
+
+
+</script>
+
+</body>
+</html>

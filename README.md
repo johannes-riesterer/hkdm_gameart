@@ -24,8 +24,9 @@ http://www.w3schools.com/
 
 https://wiki.selfhtml.org/
 
+https://www.codecademy.com/
 
 ##Hausaufgaben bis 03.06.2016
 Prototyp, SpriteAnimator, For-Schleife, if-Bedingung, Array (Keller []), For-Schelige über Array (Keller). 
-https://www.codecademy.com/
+
 

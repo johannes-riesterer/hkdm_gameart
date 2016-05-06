@@ -18,15 +18,22 @@
    function Animation(file, fps, width, height, scale, nRows, nColls, posX, posY) {
        this.spriteSheet = new Image();
        this.spriteSheet.src = file;
+       
        this.width = width;
        this.height = height;
+       
        this.nRows = nRows;
        this.nColls = nColls;
+       
        this.posX = posX;
        this.posY = posY;
+       
        this.index = 0;
+       
        this.fps = fps;
+       
        this.scale = scale;
+       
        this.elapsedTime = 0.0;
    }
 

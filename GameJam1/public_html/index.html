@@ -6,7 +6,7 @@
     </head>
 <body>
 
-    <h1 id="heading"> 0 </h1>
+    <h1 id="score"> 0 </h1>
 
     <canvas id="myCanvas" width="800" height="400" style="border:2px solid #000000;">
         Your browser does not support the HTML5 canvas tag.
@@ -203,12 +203,26 @@ function gameLoop() {
 
         if(triggerTime > 2000.0) {
             triggerTime = 0.0;
-            var obstacleAnimations = [];
-            obstacleAnimations.push([ "square.png",1,100, 100,0.8, 1,1]);
-            var obstacle = new GameObject("obstacle",canvas, obstacleAnimations, null, [400.0, 400.0], [0.0, speed], 50.0);
             
+            var xCoordinate =Math.random()*800;
+            
+            if(Math.random() <= 0.5) {
+                var obstacleAnimations = [];
+                 obstacleAnimations.push([ "square2.png",1,100, 100,0.8, 1,1]);
+                  
+                var obstacle = new GameObject("bounty",canvas, obstacleAnimations, null, [xCoordinate, 400.0], [0.0, speed], 50.0);
+                 gameObjects.push(obstacle);
+            }  
+            else {
+                 var obstacleAnimations = [];
+                 obstacleAnimations.push([ "square.png",1,100, 100,0.8, 1,1]);
+                  
+                var obstacle = new GameObject("obstacle",canvas, obstacleAnimations, null, [xCoordinate, 400.0], [0.0, speed], 50.0);
+                 gameObjects.push(obstacle);
+                
+            }
             speed -= 0.001;
-            gameObjects.push(obstacle);
+          
         
 
         }
@@ -252,25 +266,36 @@ function deleteObjectsOutOfRange() {
 }
 
 function detectCollisions() {
-    var index1;
-    var index2;
-    for (index1 = 0; index1 < gameObjects.length; ++index1) {
+  
+    for (var index1 = 0; index1 < gameObjects.length; ++index1) {
         var gameObject1 = gameObjects[index1];
         
-        for (index2 = index1+1; index2 < gameObjects.length; ++index2) {
+        for (var index2 = index1+1; index2 < gameObjects.length; ++index2) {
             var gameObject2 = gameObjects[index2];
             
             var distance = Math.sqrt(Math.pow(gameObject1.position[0]-gameObject2.position[0],2) + Math.pow(gameObject1.position[1]-gameObject2.position[1],2));
             if(distance < gameObject1.collisionRadius + gameObject2.collisionRadius) {
-                if(gameObject1.id == "player" && gameObject2.id == "obstacle") {
+                
+                if(gameObject1.id == "player" && gameObject2.id == "bounty") {
                       gameObjects.splice(index2, 1);
                       score += 1;
-                       document.getElementById("heading").innerHTML = score;
+                       document.getElementById("score").innerHTML = score;
+                }
+                else if(gameObject2.id == "player" && gameObject1.id == "bounty") {
+                         score += 1;
+                       document.getElementById("score").innerHTML = score;
+                      gameObjects.splice(index, 1);
+                }
+                
+                
+                if(gameObject1.id == "player" && gameObject2.id == "obstacle") {
+                                           gameOver = true;
+ document.getElementById("score").innerHTML = "Gameover! Score: " + score;
                 }
                 else if(gameObject2.id == "player" && gameObject1.id == "obstacle") {
-                         score += 1;
-                       document.getElementById("heading").innerHTML = score;
-                      gameObjects.splice(index, 1);
+                     gameOver = true;
+                      document.getElementById("score").innerHTML = "Gameover! Score: " + score;
+
                 }
                 //console.log("collision: " +  gameObject1.id + " / " + gameObject2.id);
                 //gameOver = true;

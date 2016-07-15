@@ -1,5 +1,5 @@
 # hkdm_gameart
-##Abgabe Semesterarbeit 22.07.2016
+##Abgabe Semesterarbeit 28.07.2016 für Semesterpräsentation
 
 ##Themengebiete: 2D-Sprite Animationen, Elemente des Modellierens, Riggens und Animieren in 3D. Grundlagen einer Gameengine, Spieleprogrammierung und Gamedesign.
 ![alt text](https://upload.wikimedia.org/wikipedia/commons/d/dd/Muybridge_race_horse_animated.gif "")

@@ -33,3 +33,4 @@ Prototyp http://www.w3schools.com/js/js_object_prototypes.asp, SpriteAnimator, F
 var snd = new Audio("file.wav"); 
 snd.play();
 
+Achtung: nicht alle Formate unterstützt!

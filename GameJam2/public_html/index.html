@@ -17,18 +17,36 @@
         position:absolute;
         z-index:1;
     }
+    
+    #container {
+        position:absolute;
+        z-index:1;
+    }
+
+
+    #startButton {
+        width:810px;
+        height:410px;
+        position:absolute;
+        left:0px;
+        top:0px;
+        z-index:11;
+        background-image: url("gamebackground.jpg");
+    }
     </style>
   
     
     </head>
 <body>
+<div id="container">
+<div id="startButton" onclick="startClicked()">Click Me!</div>
 
     <h1 id="score"> 0 </h1>
 
 <canvas id="myCanvas" width="800" height="400" style="border:2px solid #000000;">
         Your browser does not support the HTML5 canvas tag.
     </canvas>
-
+</div>
 <script>
    
    
@@ -151,7 +169,7 @@
     
     var player;
     
-    var gameOver = false;
+    var gameOver = true;
     var score = 0;
     var speed = -0.05;
     var bg;
@@ -383,6 +401,13 @@ function detectCollisions() {
             }
         }
     }
+}
+
+
+function startClicked() {
+    gameOver = false;
+    document.getElementById("startButton").style.display = "none";
+    
 }
 
 

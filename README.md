@@ -29,5 +29,7 @@ https://www.codecademy.com/
 ##Hausaufgaben bis 03.06.2016
 Prototyp http://www.w3schools.com/js/js_object_prototypes.asp, SpriteAnimator, For-Schleife http://www.w3schools.com/js/js_loop_for.asp, if-Bedingung http://www.w3schools.com/js/js_if_else.asp, Array (Keller []) http://www.w3schools.com/js/js_arrays.asp, For-Schleife über Array (Keller). 
 
-
+##sound
+var snd = new Audio("file.wav"); // buffers automatically when created
+snd.play();
 

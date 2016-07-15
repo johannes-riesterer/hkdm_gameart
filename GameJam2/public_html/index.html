@@ -3,12 +3,29 @@
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
         <title>GameArt - Sprite Animation</title>
+        
+        
+    <style>
+        #score {
+            position:absolute;
+            left:50px;
+            top:10px;
+            z-index:10;
+        }
+    
+    #myCanvas {
+        position:absolute;
+        z-index:1;
+    }
+    </style>
+  
+    
     </head>
 <body>
 
     <h1 id="score"> 0 </h1>
 
-    <canvas id="myCanvas" width="800" height="400" style="border:2px solid #000000;">
+<canvas id="myCanvas" width="800" height="400" style="border:2px solid #000000;">
         Your browser does not support the HTML5 canvas tag.
     </canvas>
 
@@ -253,7 +270,7 @@ function gameLoop() {
         detectCollisions();
         
         canvas.getContext("2d").clearRect(0, 0, canvas.width, canvas.height);
-        canvas.getContext("2d").imageSmoothingEnabled = true
+        canvas.getContext("2d").imageSmoothingEnabled = true;
         bg.update(dt);
         bg.draw(canvas.getContext("2d"));
       
